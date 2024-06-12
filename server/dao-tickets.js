@@ -23,23 +23,21 @@ exports.listTickets = () => {
             if (err) {
                 reject(err);
             }
-            const tickets = rows.map((ticket) => {
-                const ticket = convertFromDb(ticket);
-                return ticket;
-            });
+            const tickets = rows.map((ticket) => convertFromDb(ticket));
+
             resolve(tickets);
         })
     });
 }
 
 exports.createTicket = (ticket) => {
-    if (ticket.title === undefined || ticket.title === '') {
-        ticket.title = 'Untitled';
-    }
-    if (ticket.content === undefined || ticket.content === '') {
-        ticket.content = 'No content';
-    }
     return new Promise((resolve, reject) => {
+        if (ticket.title === undefined || ticket.title === '') {
+            reject('Title is required');
+        }
+        if (ticket.content === undefined || ticket.content === '') {
+            reject('Content is required');
+        }
         const sql = 'INSERT INTO tickets (title, state, category, owner, timestamp, content) VALUES (?, ?, ?, ?, ?, ?)';
         db.run(sql, [ticket.title, ticket.state, ticket.category, ticket.owner, dayjs().format('YYYY-MM-DD HH:mm:ss'), ticket.content], function (err) {
             if (err) {
@@ -73,3 +71,45 @@ exports.closeTicket = (ticketId) => {
         });
     });
 }
+
+exports.addBlock = (block) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT into blocks (ticket_id, author, timestamp, content) VALUES (?, ?, ?, ?)';
+        db.run(sql, [block.ticket_id, block.author, block.timestamp, block.content], function (err) {
+            if (err) {
+                reject(err);
+            }
+            resolve(this.lastID);
+        });
+    });
+}
+
+exports.getBlocksByTicketId = (ticketId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM blocks WHERE ticket_id = ?';
+        db.all(sql, [ticketId], (err, rows) => {
+            if (err) {
+                reject(err);
+            }
+            const blocks = rows.map((block) => convertFromDb(block));
+
+            resolve(blocks);
+        });
+    });
+}
+
+// const block = {id: 1, ticket_id: 1, author: 'toad', timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss'), content: 'This is a block'}
+
+// exports.addBlock(block).then((blockId) => {
+//     console.log(blockId);
+// }).catch((err) => {
+//     console.log(err);
+// });
+
+// const ticket = { id: 1, title: 'r', state: 0, category: 'inquiry', owner: 'toad', timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss'), content: '' }
+
+// exports.createTicket(ticket).then((ticketId) => {
+//     console.log(ticketId);
+// }).catch((err) => {
+//     console.log(err);
+// });
