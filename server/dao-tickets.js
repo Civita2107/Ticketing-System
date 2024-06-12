@@ -106,7 +106,7 @@ exports.getBlocksByTicketId = (ticketId) => {
 //     console.log(err);
 // });
 
-// const ticket = { id: 1, title: 'r', state: 0, category: 'inquiry', owner: 'toad', timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss'), content: '' }
+// const ticket = { id: 1, title: 'r', state: 0, category: 'inqiry', owner: 'toad', timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss'), content: 'rrr' }
 
 // exports.createTicket(ticket).then((ticketId) => {
 //     console.log(ticketId);

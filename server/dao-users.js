@@ -21,17 +21,19 @@ exports.loginUser = (username, password) => {
         db.get(sql, [username], (err, row) => {
             if (err) {
                 reject(err);
+                return;
             }
             if (row === undefined) {
-                resolve('User not found');
+                reject('User not found');
+                return;
             }
-            const user = { id: row.id, username: row.username, password: row.password, salt: row.salt, admin: row.admin };
+            const user = { id: row.id, username: row.username, admin: row.admin };
 
             crypto.scrypt(password, row.salt, 32, function (err, hashedPassword) {
                 if (err) {
                     reject(err);
                 }
-                if (!crypto.timingSafeEqual(Buffer.from(user.password, 'hex'), Buffer.from(hashedPassword))) {
+                if (!crypto.timingSafeEqual(Buffer.from(row.password, 'hex'), hashedPassword)) {
                     resolve('Wrong password');
                 }
                 resolve(user);
