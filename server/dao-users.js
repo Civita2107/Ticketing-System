@@ -25,13 +25,13 @@ exports.loginUser = (username, password) => {
             if (row === undefined) {
                 resolve('User not found');
             }
-            const user = row;
+            const user = { id: row.id, username: row.username, password: row.password, salt: row.salt, admin: row.admin };
 
-            crypto.scrypt(password, user.salt, 32, function (err, hashedPassword) {
+            crypto.scrypt(password, row.salt, 32, function (err, hashedPassword) {
                 if (err) {
                     reject(err);
                 }
-                if (!crypto.timingSafeEqual(Buffer.from(user.password), Buffer.from(hashedPassword))) {
+                if (!crypto.timingSafeEqual(Buffer.from(user.password, 'hex'), Buffer.from(hashedPassword))) {
                     resolve('Wrong password');
                 }
                 resolve(user);
@@ -39,3 +39,15 @@ exports.loginUser = (username, password) => {
         });
     });
 }
+
+// exports.getUserById(2).then((user) => {
+//     console.log(user);
+// }).catch((err) => {
+//     console.log(err);
+// });
+
+// exports.loginUser('toad', 'password').then((user) => {
+//     console.log(user);
+// }).catch((err) => {
+//     console.log(err);
+// });
