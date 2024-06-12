@@ -1,0 +1,12 @@
+GET http://localhost:3001/tickets HTTP/1.1
+###
+GET http://localhost:3001/tickets/3 HTTP/1.1
+###
+POST http://localhost:3001/tickets HTTP/1.1
+content-type: application/json
+
+{
+    "title": "New Ticket",
+    "content": "This is the content of the new ticket",
+    "category": "inquiry" 
+}

@@ -18,7 +18,7 @@ const convertFromDb = (dbRecord) => {
 //get all tickets
 exports.listTickets = () => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM tickets';
+        const sql = 'SELECT * FROM tickets ORDER BY timestamp DESC';
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
@@ -27,6 +27,22 @@ exports.listTickets = () => {
 
             resolve(tickets);
         })
+    });
+}
+
+exports.getTicketById = (ticketId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM tickets WHERE id = ?';
+        db.get(sql, [ticketId], (err, row) => {
+            if (err) {
+                reject(err);
+            }
+            if (row === undefined) {
+                reject('Ticket not found');
+                return;
+            }
+            resolve(convertFromDb(row));
+        });
     });
 }
 
@@ -43,7 +59,7 @@ exports.createTicket = (ticket) => {
             if (err) {
                 reject(err);
             }
-            resolve(this.lastID);
+            resolve(exports.getTicketById(this.lastID));
         });
     });
 }
@@ -110,6 +126,18 @@ exports.getBlocksByTicketId = (ticketId) => {
 
 // exports.createTicket(ticket).then((ticketId) => {
 //     console.log(ticketId);
+// }).catch((err) => {
+//     console.log(err);
+// });
+
+// exports.listTickets().then((tickets) => {
+//     console.log(tickets);
+// }).catch((err) => {
+//     console.log(err);
+// });
+
+// exports.getTicketById(5).then((ticket) => {
+//     console.log(ticket);
 // }).catch((err) => {
 //     console.log(err);
 // });
