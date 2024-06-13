@@ -162,6 +162,11 @@ app.post('/sessions', (req, res, next) => {
   })(req, res, next);
 });
 
+app.delete('/sessions', (req, res) => {
+  req.logout();
+  res.status(200).json({ message: 'Logout successful' });
+});
+
 // activate the server
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
