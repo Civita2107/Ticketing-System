@@ -90,8 +90,11 @@ exports.closeTicket = (ticketId) => {
 
 exports.addBlock = (block) => {
     return new Promise((resolve, reject) => {
+        if (block.content === undefined || block.content === '') {
+            reject('Content is required');
+        }
         const sql = 'INSERT into blocks (ticket_id, author, timestamp, content) VALUES (?, ?, ?, ?)';
-        db.run(sql, [block.ticket_id, block.author, block.timestamp, block.content], function (err) {
+        db.run(sql, [block.ticket_id, block.author, dayjs().format('YYYY-MM-DD HH:mm:ss'), block.content], function (err) {
             if (err) {
                 reject(err);
             }

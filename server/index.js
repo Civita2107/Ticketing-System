@@ -82,7 +82,7 @@ app.post('/tickets', isLoggedIn,
       state: 1,
       category: req.body.category,
       owner: req.user.id,
-      content: req.body.content,
+      content: req.body.content
     };
 
     try {
@@ -91,6 +91,28 @@ app.post('/tickets', isLoggedIn,
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Error creating ticket' });
+    }
+  });
+
+app.post('/tickets/:id', isLoggedIn,
+  [check('content').isLength({ min: 1, max: maxContentLength })],
+  async (req, res) => {
+    const errors = validationResult(req).formatWith(errorFormatter);
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors.errors);
+    }
+
+    const block = {
+      ticket_id: req.params.id,
+      author: req.user.id,
+      content: req.body.content
+    }
+    try {
+      const result = await ticketDao.addBlock(block);
+      res.json(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error adding block' });
     }
   });
 
