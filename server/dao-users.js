@@ -24,7 +24,7 @@ exports.loginUser = (username, password) => {
                 return;
             }
             if (row === undefined) {
-                reject('User not found');
+                reject('Incorrect username or password');
                 return;
             }
             const user = { id: row.id, username: row.username, admin: row.admin };
@@ -34,7 +34,7 @@ exports.loginUser = (username, password) => {
                     reject(err);
                 }
                 if (!crypto.timingSafeEqual(Buffer.from(row.password, 'hex'), hashedPassword)) {
-                    resolve('Wrong password');
+                    reject('Incorrect username or password');
                 }
                 resolve(user);
             });

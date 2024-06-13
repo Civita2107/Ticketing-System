@@ -32,6 +32,35 @@ app.use(cors(corsOption));
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
+passport.use(new LocalStrategy(async function verify(username, password, done) {
+  try {
+    const user = await userDao.loginUser(username, password);
+    if (!user) {
+      return done(null, false, { message: 'Incorrect username or password' });
+    }
+    return done(null, user);
+  } catch (err) {
+    return done(null, false, { message: err });
+  }
+}));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser(async (user, done) => {
+  return done(null, user);
+});
+
+app.use(session({
+  secret: 'Calm down, you can reuse it for the exam!',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { httpOnly: true, secure: false },
+}));
+
+app.use(passport.authenticate('session'));
+
 const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
@@ -115,6 +144,23 @@ app.post('/tickets/:id', isLoggedIn,
       res.status(500).json({ error: 'Error adding block' });
     }
   });
+
+app.post('/sessions', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.status(401).json({ error: info });
+    }
+    req.login(user, (err) => {
+      if (err) {
+        return res.status(500).json({ error: err });
+      }
+      return res.json(req.user);
+    });
+  })(req, res, next);
+});
 
 // activate the server
 app.listen(port, () => {
