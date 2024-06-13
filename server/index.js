@@ -145,6 +145,30 @@ app.post('/tickets/:id', isLoggedIn,
     }
   });
 
+app.put('/tickets/:id', isLoggedIn,
+  [check('id').isInt({ min: 1 })],
+  async (req, res) => {
+    try {
+      ticket = await ticketDao.getTicketById(req.params.id);
+      if (ticket.owner !== req.user.id || !req.user.admin) {
+        return res.status(403).json({ error: 'User not authorized' });
+      } else if (ticket.state === 0 && (ticket.owner === req.user.id || req.user.admin)) {
+        await ticketDao.openTicket(req.params.id);
+        res.json({ message: 'Ticket opened' });
+      } else if (ticket.state === 1 && (ticket.owner === req.user.id || req.user.admin)) {
+        await ticketDao.closeTicket(req.params.id);
+        res.json({ message: 'Ticket closed' });
+      } else if (ticket.category !== req.body.category && req.user.admin) {
+        await ticketDao.updateCategory(req.params.id, req.body.category);
+        res.json({ message: 'Category updated' });
+      }
+    }
+    catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error opening ticket' });
+    }
+  });
+
 app.post('/sessions', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {

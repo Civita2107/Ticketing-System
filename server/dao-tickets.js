@@ -71,7 +71,7 @@ exports.openTicket = (ticketId) => {
             if (err) {
                 reject(err);
             }
-            resolve();
+            resolve(this.lastID);
         });
     });
 }
@@ -83,7 +83,19 @@ exports.closeTicket = (ticketId) => {
             if (err) {
                 reject(err);
             }
-            resolve();
+            resolve(this.lastID);
+        });
+    });
+}
+
+exports.updateCategory = (ticketId, category) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE tickets SET category = ? WHERE id = ?';
+        db.run(sql, [category, ticketId], function (err) {
+            if (err) {
+                reject(err);
+            }
+            resolve(this.lastID);
         });
     });
 }
