@@ -78,7 +78,21 @@ const isAdmin = (req, res, next) => {
 
 app.get('/tickets', (req, res) => {
   ticketDao.listTickets().then((tickets) => {
-    res.json(tickets);
+    if (req.user && req.user.admin) {
+      return res.json(tickets);
+    } else {
+      const filteredTickets = tickets.map(ticket => {
+        return {
+          id: ticket.id,
+          title: ticket.title,
+          state: ticket.state,
+          category: ticket.category,
+          owner: ticket.owner,
+          timestamp: ticket.timestamp
+        }
+      });
+      return res.json(filteredTickets);
+    }
   }).catch((err) => {
     console.error(err);
     res.status(500).json({ error: 'Error retrieving tickets' });
