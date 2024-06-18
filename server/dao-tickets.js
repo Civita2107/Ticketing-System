@@ -23,9 +23,14 @@ exports.listTickets = () => {
             if (err) {
                 reject(err);
             }
+            if (rows) {
+            console.log(rows);
             const tickets = rows.map((ticket) => convertFromDb(ticket));
-
             resolve(tickets);
+            } else {
+                reject('No tickets found');
+                return;
+            }
         })
     });
 }

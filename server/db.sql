@@ -6,7 +6,7 @@ CREATE TABLE tickets (
     category TEXT NOT NULL,
     owner INTEGER NOT NULL,
     title TEXT NOT NULL,
-    timestamp INTEGER NOT NULL,
+    timestamp TEXT NOT NULL,
     content TEXT NOT NULL,
     FOREIGN KEY(owner) REFERENCES users(id)
     CHECK (category IN ('inquiry', 'maintainance', 'new feature', 'administrative', 'payment')),
@@ -38,5 +38,12 @@ INSERT INTO users (username, password, salt, admin) VALUES ('peach', '22ad2ca718
 INSERT INTO users (username, password, salt, admin) VALUES ('toad', 'e96d9f20c3648d55a59e68b6d9027cd25947b0e4d4494b20919a94061031fc45', '44444444444444444444444444444444', 1);
 INSERT INTO users (username, password, salt, admin) VALUES ('yoshi', 'bf8e8626b2a27371e7479afb45072397fd2d7e67e67dfb4c61accea983ca78e5', '55555555555555555555555555555555', 0);
 INSERT INTO users (username, password, salt, admin) VALUES ('bowser', 'aa9564c3b4ba8003bb457eabb83058a71be8c7f131ae0e88750411bc1cdba0f0', '66666666666666666666666666666666', 0);
+
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (1, 'inquiry', 2, 'How to use the software?', '2024-06-13 00:03:15', 'I am new to the software and I am not sure how to use it. Can you help me?');
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (1, 'maintainance', 3, 'Software crashes on startup', '2024-06-13 00:03:20', 'The software crashes every time I try to start it. Can you help me?');
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (0, 'new feature', 2, 'Feature request: Dark mode', '2024-06-13 00:05:24', 'I would like to request a dark mode for the software. Can you add this feature?');
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (0, 'administrative', 3, 'Change email address', '2024-06-13 00:06:30', 'I need to change my email address in the system. Can you help me?');
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (1, 'payment', 1, 'Payment not processed', '2024-06-13 00:07:56', 'I made a payment but it has not been processed yet. Can you check on this?');
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (0, 'inquiry', 1, 'How to update the software?', '2024-06-13 00:08:45', 'I need to update the software to the latest version. Can you guide me through the process?');
 
 COMMIT;
