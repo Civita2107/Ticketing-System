@@ -23,7 +23,7 @@ const errorFormatter = ({ location, msg, param, value, nestedErrors }) => {
 };
 
 const corsOption = {
-  origin: 'http://localhost:3001',
+  origin: 'http://localhost:5173',
   optionsSuccessStatus: 200,
   credentials: true,
 };

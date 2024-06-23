@@ -71,11 +71,28 @@ function AppWithRouter() {
     checkAuth();
   }, []);
 
+  useEffect(() => {
+    if (dirty) {
+      getTickets();
+    }
+  });
+
   const handleLogout = async () => {
     await API.logOut();
     setLoggedIn(false);
     setUser(null);
   };
+
+  function getTickets() {
+    API.getTickets()
+      .then((tickets) => {
+        setTickets(tickets);
+        setDirty(false);
+      })
+      .catch((err) => {
+        handleErrors(err);
+      });
+  }
 
 
   return (
@@ -83,7 +100,7 @@ function AppWithRouter() {
       <Routes>
         <Route path="/" element={<GenericLayout loggedIn={loggedIn} user={user} logout={handleLogout} />} >
           <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin} /> : <Navigate replace to='/' />} />
-          <Route index element={<TableLayout tickets={tickets} />} />
+          <Route index element={<TableLayout tickets={tickets} handleErrors={handleErrors}/>} />
           <Route path="*" element={<NotFoundLayout />} />
         </Route>
       </Routes>

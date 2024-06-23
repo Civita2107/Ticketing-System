@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function NavBar (props) {
   return (
     <>
-      <Navbar bg="dark" variant="dark" fixed="top">
+      <Navbar bg="dark" variant="dark" fixed="top" style={{marginBottom: '20px'}}>
         <Container fluid>
           <Navbar.Brand href="/"><FaTicketAlt style={{ marginTop: '-4px', paddingRight: '4px'}} />TICKETING SYSTEM</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
