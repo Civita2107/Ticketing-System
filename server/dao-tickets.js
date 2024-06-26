@@ -124,12 +124,9 @@ exports.addBlock = (block) => {
 
 exports.getBlocksByTicketId = (ticketId) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT blocks.*, tickets.content AS ticket_content FROM tickets 
-            LEFT JOIN blocks ON blocks.ticket_id = tickets.id
-            WHERE tickets.id = ? ORDER BY blocks.timestamp ASC`;
-                    // SELECT blocks.*, block_author.username AS block_author_username FROM blocks
-            // LEFT JOIN users AS block_author ON blocks.author_id = block_author.user_id 
-            // WHERE blocks.ticket_id = ? ORDER BY blocks.creation_time ASC
+        const sql = `SELECT blocks.*, block_author.username AS block_author_username FROM blocks
+            LEFT JOIN users AS block_author ON blocks.author = block_author.id 
+            WHERE blocks.ticket_id = ? ORDER BY blocks.timestamp ASC`;
         db.all(sql, [ticketId], (err, rows) => {
             if (err) {
                 reject(err);
