@@ -1,9 +1,44 @@
 .ticket-table {
-    width: 100%; /* Ensures the table takes the full width */
-    table-layout: fixed; /* This helps with consistent column widths */
+    width: 100%; 
+    table-layout: fixed; 
+    overflow: hidden;
+    border-collapse: separate;
 }
 
 .ticket-table td, .ticket-table th {
-    width: 50%; /* Adjusts the width of each column */
-    text-align: left; /* Aligns text to the left */
+    width: 50%; 
+    text-align: left; 
+    
 }
+
+.not-found-row {
+    text-align: center; /* Aligns text to the center */
+    margin-top: 20px;  /* Adds space above the text */
+}
+
+.not-found-column {
+    width: 100%; /* Sets the width of the column to 100% */
+    align-items: center; /* Aligns text to the center */
+    justify-content: center; /* Aligns text to the center */
+}
+
+.accordion {
+    color: #000; /* Sets the text color of the accordion */
+    cursor: pointer; /* Changes the cursor to a pointer when hovering over the accordion */
+    width: 100%; /* Sets the width of the accordion to 100% */
+    border: none; /* Removes the border from the accordion */
+    text-align: left; /* Aligns text to the left */
+    outline: none; /* Removes the outline from the accordion */
+    font-size: 16px; /* Sets the font size of the accordion */
+    transition: 0.4s; /* Adds a transition effect to the accordion */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 28px; 
+    overflow: hidden;
+}
+
+/* Remove default focus outline */
+.accordion:focus {
+    box-shadow: none;
+    outline: none;
+}
+

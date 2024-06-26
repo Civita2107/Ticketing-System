@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function NavBar (props) {
   return (
     <>
-      <Navbar bg="dark" variant="dark" fixed="top" style={{marginBottom: '20px'}}>
+      <Navbar bg="dark" variant="dark" fixed="top">
         <Container fluid>
           <Navbar.Brand href="/"><FaTicketAlt style={{ marginTop: '-4px', paddingRight: '4px'}} />TICKETING SYSTEM</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -17,7 +17,6 @@ function NavBar (props) {
             <Nav>
               {props.loggedIn ? (
                 <>
-                  console.log(props.user);
                   <FaUserCircle /> {props.user.username}
                   <LogoutButton logout={props.logout} />
                 </>

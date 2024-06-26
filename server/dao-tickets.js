@@ -12,19 +12,21 @@ const convertFromDb = (dbRecord) => {
     ticket.owner = dbRecord.owner;
     ticket.timestamp = dbRecord.timestamp;
     ticket.content = dbRecord.content;
+    ticket.username = dbRecord.ticket_author_username;
 
     return ticket;
 }
 //get all tickets
 exports.listTickets = () => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM tickets ORDER BY timestamp DESC';
+        const sql = `SELECT tickets.*, ticket_author.username AS ticket_author_username FROM tickets 
+            LEFT JOIN users AS ticket_author ON tickets.owner = ticket_author.id 
+            ORDER BY tickets.timestamp DESC`;
         db.all(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
             }
             if (rows) {
-            console.log(rows);
             const tickets = rows.map((ticket) => convertFromDb(ticket));
             resolve(tickets);
             } else {
@@ -122,17 +124,22 @@ exports.addBlock = (block) => {
 
 exports.getBlocksByTicketId = (ticketId) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM blocks WHERE ticket_id = ?';
+        const sql = `SELECT blocks.*, tickets.content AS ticket_content FROM tickets 
+            LEFT JOIN blocks ON blocks.ticket_id = tickets.id
+            WHERE tickets.id = ? ORDER BY blocks.timestamp ASC`;
+                    // SELECT blocks.*, block_author.username AS block_author_username FROM blocks
+            // LEFT JOIN users AS block_author ON blocks.author_id = block_author.user_id 
+            // WHERE blocks.ticket_id = ? ORDER BY blocks.creation_time ASC
         db.all(sql, [ticketId], (err, rows) => {
             if (err) {
                 reject(err);
             }
-            const blocks = rows.map((block) => convertFromDb(block));
 
-            resolve(blocks);
+            resolve(rows);
         });
     });
 }
+
 
 // const block = {id: 1, ticket_id: 1, author: 'toad', timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss'), content: 'This is a block'}
 

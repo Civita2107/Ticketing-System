@@ -28,3 +28,6 @@ Content-Type: application/json
     "username": "maro",
     "password": "password"
 }
+
+###
+GET http://localhost:3001/blocks/1 HTTP/1.1

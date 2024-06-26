@@ -46,21 +46,35 @@ const getTickets = async () => {
   }));
 
   const ticketsWithOwner = await Promise.all(tickets.map(async (ticket) => {
-    const owner = await getUserById(ticket.owner);
     const state = ticket.state === 1 ? 'Open' : 'Closed';
     
-    return {
+    const ticketWithOwner = {
       id: ticket.id,
       title: ticket.title,
       state: state,
       category: ticket.category,
-      owner: owner.username, // Assuming the user object has a username field
+      owner: ticket.username, 
       timestamp: ticket.timestamp,
     };
+
+    if (ticket.content) {
+      ticketWithOwner.content = ticket.content;
+    }
+    return ticketWithOwner;
   }));
-  
+  console.log(ticketsWithOwner);
   return ticketsWithOwner;
 }
+
+const getTicketContent = async (ticketId) => {
+  return getJson(fetch(SERVER_URL + 'blocks/' + ticketId, {
+    method: 'GET',
+    credentials: 'include'
+  })).then(blocks => {
+    return {
+      content: blocks.content,
+    }});
+  }
 
 function addTicket(ticket) {
   return getJson(fetch(SERVER_URL + 'tickets', {
@@ -109,5 +123,5 @@ const getUserInfo = async () => {
   }));
 }
 
-const API = { logIn, logOut, getUserInfo, getTickets, addTicket, addBlock };
+const API = { logIn, logOut, getUserInfo, getTickets, addTicket, addBlock, getTicketContent };
 export default API;

@@ -89,7 +89,7 @@ app.get('/users/:id',
 
 app.get('/tickets', (req, res) => {
   ticketDao.listTickets().then((tickets) => {
-    if (req.user && req.user.admin) {
+    if (req.isAuthenticated()) {
       return res.json(tickets);
     } else {
       const filteredTickets = tickets.map(ticket => {
@@ -98,7 +98,7 @@ app.get('/tickets', (req, res) => {
           title: ticket.title,
           state: ticket.state,
           category: ticket.category,
-          owner: ticket.owner,
+          username: ticket.username,
           timestamp: ticket.timestamp
         }
       });
@@ -121,6 +121,19 @@ app.get('/tickets/:id', isLoggedIn,
       res.status(500).json({ error: 'Error retrieving ticket' });
     }
   });
+
+app.get('/blocks/:id',
+  [check('id').isInt({ min: 1 })],
+  async (req, res) => {
+    try {
+      const blocks = await ticketDao.getBlocksByTicketId(req.params.id);
+      res.json(blocks);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error retrieving blocks' });
+    }
+  });
+
 
 app.post('/tickets', isLoggedIn,
   [check('title').isLength({ min: 1, max: maxTitleLength }),

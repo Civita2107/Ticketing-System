@@ -32,6 +32,7 @@ function AppWithRouter() {
       const user = await API.logIn(credentials);
       setUser(user);
       setLoggedIn(true);
+      setDirty(true);
     } catch (err) {
       throw err;
     }
@@ -81,6 +82,7 @@ function AppWithRouter() {
     await API.logOut();
     setLoggedIn(false);
     setUser(null);
+    setDirty(true);
   };
 
   function getTickets() {
@@ -94,13 +96,24 @@ function AppWithRouter() {
       });
   }
 
+  function addTicket(ticket) {
+    API.addTicket(ticket)
+      .then((ticket) => {
+        setTickets([...tickets, ticket]);
+        setDirty(true);
+      })
+      .catch((err) => {
+        handleErrors(err);
+      });
+  }
 
   return (
     <Container fluid>
       <Routes>
-        <Route path="/" element={<GenericLayout loggedIn={loggedIn} user={user} logout={handleLogout} />} >
-          <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin} /> : <Navigate replace to='/' />} />
+        <Route path="/" element={<GenericLayout loggedIn={loggedIn} user={user} logout={handleLogout} message={message} setMessage={setMessage} />} >
           <Route index element={<TableLayout tickets={tickets} handleErrors={handleErrors}/>} />
+          <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin} /> : <Navigate replace to='/' />} />
+          {/* <Route path="/add" element={loggedIn ? <AddLayout addTicket={addTicket} /> : <Navigate replace to='/login' />} /> */}
           <Route path="*" element={<NotFoundLayout />} />
         </Route>
       </Routes>

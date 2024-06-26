@@ -9,8 +9,7 @@ function TicketTable(props) {
         
         <Accordion alwaysOpen>
             {tickets.map((ticket, index) => (
-                <br></br>,
-                <Accordion.Item key={ticket.id} eventKey={String(index)}>
+                <Accordion.Item key={ticket.id} eventKey={String(index)} className='accordion mt-3'>
                     <Accordion.Header>
                         <Table className='ticket-table'>
                             <tbody>
@@ -40,6 +39,7 @@ function TicketTable(props) {
                     <Accordion.Body>
                         {ticket.content}
                     </Accordion.Body>
+                    
                 </Accordion.Item>
             ))}
         </Accordion>
@@ -53,7 +53,7 @@ function TicketTable(props) {
 
         return (
             <tr>
-                <td colSpan="6" style={{ padding: 0 }}>
+                <td>
 
 
 

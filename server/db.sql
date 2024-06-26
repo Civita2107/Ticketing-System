@@ -46,4 +46,9 @@ INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (
 INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (1, 'payment', 1, 'Payment not processed', '2024-06-13 00:07:56', 'I made a payment but it has not been processed yet. Can you check on this?');
 INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (0, 'inquiry', 1, 'How to update the software?', '2024-06-13 00:08:45', 'I need to update the software to the latest version. Can you guide me through the process?');
 
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (1, 1, '2024-06-21 00:12:32', 'Sure! Here are the steps to use the software: 1. Open the software. 2. Click on the "Help" menu. 3. Select "User Guide" from the menu. 4. Read the user guide for instructions on how to use the software.');
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (2, 1, '2024-06-25 23:12:55', 'I will look into the issue and get back to you with a solution.');
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (3, 1, '2024-06-26 10:45:30', 'Thank you for the suggestion! I will add dark mode to the feature request list.');
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (1, 1, '2024-06-27 08:30:15', 'I have updated your email address in the system.');
+
 COMMIT;

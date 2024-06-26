@@ -8,9 +8,9 @@ import API from '../API';
 
 function NotFoundLayout() {
     return (
-        <Row>
+        <Row className='not-found-row'>
             <Col xs={2}></Col>
-            <Col xs={8}>
+            <Col xs={8} className='not-found-column'>
                 <h1>404 Not Found</h1>
                 <p>The page you are looking for does not exist.</p>
                 <Link to='/'>Go back to home</Link>
@@ -57,6 +57,12 @@ function TableLayout(props) {
     );
 }
 
+function AddLayout (props) {
+    return (
+        <TicketForm addTicket={props.addTicket} />
+    );
+}
+
 function GenericLayout(props) {
 
     return (
@@ -71,14 +77,13 @@ function GenericLayout(props) {
                 <Container>
             <Row>
                 <Col>
-                <p></p>
                     <Outlet />
                 </Col>
             </Row>
             </Container>
             </div>
         </>
-    )
+    );
 }
 
-export { NotFoundLayout, LoginLayout, GenericLayout, TableLayout };
+export { NotFoundLayout, LoginLayout, GenericLayout, TableLayout, AddLayout };
