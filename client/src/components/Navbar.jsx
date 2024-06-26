@@ -17,6 +17,7 @@ function NavBar (props) {
             <Nav>
               {props.loggedIn ? (
                 <>
+                  console.log(props.user);
                   <FaUserCircle /> {props.user.username}
                   <LogoutButton logout={props.logout} />
                 </>

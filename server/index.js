@@ -32,24 +32,24 @@ app.use(cors(corsOption));
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
-passport.use(new LocalStrategy(async function verify(username, password, done) {
+passport.use(new LocalStrategy(async function verify(username, password, callback) {
   try {
     const user = await userDao.loginUser(username, password);
     if (!user) {
-      return done(null, false, { message: 'Incorrect username or password' });
+      return callback(null, false, { message: 'Incorrect username or password' });
     }
-    return done(null, user);
+    return callback(null, user);
   } catch (err) {
-    return done(null, false, { message: err });
+    return callback(null, false, { message: err });
   }
 }));
 
-passport.serializeUser((user, done) => {
-  done(null, user);
+passport.serializeUser((user, callback) => {
+  callback(null, user);
 });
 
-passport.deserializeUser(async (user, done) => {
-  return done(null, user);
+passport.deserializeUser(async (user, callback) => {
+  return callback(null, user);
 });
 
 app.use(session({
@@ -75,6 +75,17 @@ const isAdmin = (req, res, next) => {
   return res.status(403).json({ error: 'User not authorized' });
 }
 
+app.get('/users/:id',
+  [check('id').isInt({ min: 1 })],
+  async (req, res) => {
+    try {
+      const user = await userDao.getUserById(req.params.id);
+      res.json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error retrieving user' });
+    }
+  });
 
 app.get('/tickets', (req, res) => {
   ticketDao.listTickets().then((tickets) => {
@@ -200,9 +211,18 @@ app.post('/sessions', (req, res, next) => {
   })(req, res, next);
 });
 
-app.delete('/sessions', (req, res) => {
-  req.logout();
-  res.status(200).json({ message: 'Logout successful' });
+app.get('/sessions/current', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.status(200).json(req.user);
+  } else {
+    res.status(401).json({ error: 'User not authenticated' });
+  }
+});
+
+app.delete('/sessions/current', (req, res) => {
+  req.logout(() => {
+    res.status(200).json({ message: 'Logout successful' });
+  });
 });
 
 // activate the server

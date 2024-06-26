@@ -59,6 +59,7 @@ function LogoutButton(props) {
 }
 
 function LoginButton(props) {
+    const navigate = useNavigate();
     return (
         <Button variant='primary' onClick={ () => navigate('/login')}>Login</Button>
     );

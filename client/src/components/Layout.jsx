@@ -71,6 +71,7 @@ function GenericLayout(props) {
                 <Container>
             <Row>
                 <Col>
+                <p></p>
                     <Outlet />
                 </Col>
             </Row>

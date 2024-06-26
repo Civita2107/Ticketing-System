@@ -26,23 +26,62 @@ function getJson(httpResponsePromise) {
   });
 }
 
-const getTickets = async () => {
-  return getJson(fetch(SERVER_URL + 'tickets', {
+const getUserById = async (userId) => {
+  return getJson(fetch(SERVER_URL + 'users/' + userId, {
     method: 'GET',
     credentials: 'include'
-  })).then(tickets => {
-    return tickets.map(ticket => {
-      const ticketJson = {
-        id : ticket.id,
-        title : ticket.title,
-        state : ticket.state,
-        category : ticket.category,
-        owner : ticket.owner,
-        timestamp : ticket.timestamp,
-      }
-      return ticketJson;
-    });
+  })).then(user => {
+    return {
+      id: user.id,
+      username: user.username,
+      admin: user.admin
+    };
   });
+}
+
+const getTickets = async () => {
+   const tickets = await getJson(fetch(SERVER_URL + 'tickets', {
+    method: 'GET',
+    credentials: 'include'
+  }));
+
+  const ticketsWithOwner = await Promise.all(tickets.map(async (ticket) => {
+    const owner = await getUserById(ticket.owner);
+    const state = ticket.state === 1 ? 'Open' : 'Closed';
+    
+    return {
+      id: ticket.id,
+      title: ticket.title,
+      state: state,
+      category: ticket.category,
+      owner: owner.username, // Assuming the user object has a username field
+      timestamp: ticket.timestamp,
+    };
+  }));
+  
+  return ticketsWithOwner;
+}
+
+function addTicket(ticket) {
+  return getJson(fetch(SERVER_URL + 'tickets', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify(ticket)
+  }));
+}
+
+function addBlock(block) {
+  return getJson(fetch(SERVER_URL + 'tickets/:id', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify(block)
+  }));
 }
 
 const logIn = async (credentials) => {
@@ -70,5 +109,5 @@ const getUserInfo = async () => {
   }));
 }
 
-const API = { logIn, logOut, getUserInfo, getTickets };
+const API = { logIn, logOut, getUserInfo, getTickets, addTicket, addBlock };
 export default API;

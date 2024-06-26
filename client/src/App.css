@@ -1,1 +1,9 @@
+.ticket-table {
+    width: 100%; /* Ensures the table takes the full width */
+    table-layout: fixed; /* This helps with consistent column widths */
+}
 
+.ticket-table td, .ticket-table th {
+    width: 50%; /* Adjusts the width of each column */
+    text-align: left; /* Aligns text to the left */
+}

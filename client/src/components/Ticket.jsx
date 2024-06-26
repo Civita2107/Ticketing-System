@@ -2,12 +2,6 @@ import dayjs from 'dayjs';
 import { Table, Card, Button, Accordion } from 'react-bootstrap';
 import React from 'react';
 
-const formatDate = (date) => {
-    return dayjs(date).format('YYYY-MM-DD');
-}
-
-
-
 function TicketTable(props) {
     const { tickets } = props;
 
@@ -18,33 +12,33 @@ function TicketTable(props) {
                 <br></br>,
                 <Accordion.Item key={ticket.id} eventKey={String(index)}>
                     <Accordion.Header>
-                        {ticket.title} - {ticket.category} - {ticket.state} - {ticket.owner}
-                    </Accordion.Header>
-                    <Accordion.Body>
-                        <Table>
+                        <Table className='ticket-table'>
                             <tbody>
                                 <tr>
-                                    <td>Title</td>
+                                    <th>Title</th>
                                     <td>{ticket.title}</td>
                                 </tr>
                                 <tr>
-                                    <td>State</td>
+                                    <th>State</th>
                                     <td>{ticket.state}</td>
                                 </tr>
                                 <tr>
-                                    <td>Category</td>
+                                    <th>Category</th>
                                     <td>{ticket.category}</td>
                                 </tr>
                                 <tr>
-                                    <td>Owner</td>
+                                    <th>Owner</th>
                                     <td>{ticket.owner}</td>
                                 </tr>
                                 <tr>
-                                    <td>Creation Date</td>
-                                    <td>{formatDate(ticket.creationDate)}</td>
+                                    <th>Creation Date</th>
+                                    <td>{ticket.timestamp}</td>
                                 </tr>
                             </tbody>
                         </Table>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                        {ticket.content}
                     </Accordion.Body>
                 </Accordion.Item>
             ))}
