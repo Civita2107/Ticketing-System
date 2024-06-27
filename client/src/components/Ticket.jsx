@@ -1,14 +1,48 @@
-import dayjs from 'dayjs';
 import { Table, Card, Button, Accordion } from 'react-bootstrap';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
+import API from '../API';
 
 function TicketTable(props) {
-    const { tickets } = props;
+    const { tickets, handleErrors } = props;
 
     return (
-        
-        <Accordion alwaysOpen>
+        <>
+            <AddButton />
             {tickets.map((ticket, index) => (
+                <TicketRow key={index} ticket={ticket} handleErrors={handleErrors} />
+            ))}
+        </>
+    )
+}
+
+function TicketRow(props) {
+
+    const { ticket, index, handleErrors } = props;
+
+    const [blocks, setBlocks] = useState([]);
+    const [update, setUpdate] = useState(true);
+
+    useEffect(() => {
+        if (update) {
+            API.getTicketContent(ticket.id)
+                .then((blocks) => {
+                    setBlocks(blocks);
+                    setUpdate(false);
+                })
+                .catch((err) => {
+                    handleErrors(err);
+                });
+        }
+    });
+
+
+
+
+    return (
+        <>
+            <Accordion alwaysOpen>
                 <Accordion.Item key={ticket.id} eventKey={String(index)} className='accordion mt-3'>
                     <Accordion.Header>
                         <Table className='ticket-table'>
@@ -36,33 +70,48 @@ function TicketTable(props) {
                             </tbody>
                         </Table>
                     </Accordion.Header>
-                    <Accordion.Body>
-                        {ticket.content}
+                    <Accordion.Body style= {{ whiteSpace: "pre-line"}}>
+                        {DOMPurify.sanitize(ticket.content)}
+                        {blocks.map((block, index) => (
+                            <Card key={index}>
+                                <BlockRow block={block} />
+                            </Card>
+                        ))}
                     </Accordion.Body>
-                    
+
                 </Accordion.Item>
-            ))}
-        </Accordion>
-    );
+            </Accordion>
+        </>
+    )
 }
-    
 
-    function TicketRow(props) {
+function BlockRow(props) {
+    const { block } = props;
 
+    return (
+        <>
+            <Card.Body>
+                <Card.Title>{block.username}</Card.Title>
+                <Card.Text style={{ whiteSpace: "pre-line" }}>{DOMPurify.sanitize(block.content)}</Card.Text>
+                <Card.Text>{block.timestamp}</Card.Text>
+            </Card.Body>
 
+        </>
+    )
+}
 
-        return (
-            <tr>
-                <td>
+function AddButton() {
+    const navigate = useNavigate();
 
+    return (
+        <Button className="login-button" style={{
+            fontSize: "1.5rem", padding: '10px 20px', position: 'fixed', top: 70, right: 15,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}
+            onClick={() => navigate('/add')}>+</Button>
+    )
+}
 
-
-
-
-                </td>
-            </tr>
-        )
-    }
-
-
-export { TicketTable };
+export { TicketTable }; 

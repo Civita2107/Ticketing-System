@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Routes, Route, BrowserRouter, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { NavBar } from './components/Navbar'
-import { LoginLayout, GenericLayout, NotFoundLayout, TableLayout } from './components/Layout'
+import { LoginLayout, GenericLayout, NotFoundLayout, TableLayout, AddLayout } from './components/Layout'
 import API from './API'
 
 function App() {
@@ -26,6 +26,8 @@ function AppWithRouter() {
   const [tickets, setTickets] = useState([]);
   const [message, setMessage] = useState('');
   const [dirty, setDirty] = useState(true);
+  const [ticketContent, setTicketContent] = useState([]);
+  const [update, setUpdate] = useState(true);
 
   const handleLogin = async (credentials) => {
     try {
@@ -33,6 +35,7 @@ function AppWithRouter() {
       setUser(user);
       setLoggedIn(true);
       setDirty(true);
+      setUpdate(true);
     } catch (err) {
       throw err;
     }
@@ -83,6 +86,7 @@ function AppWithRouter() {
     setLoggedIn(false);
     setUser(null);
     setDirty(true);
+    setUpdate(true);
   };
 
   function getTickets() {
@@ -98,9 +102,9 @@ function AppWithRouter() {
 
   function addTicket(ticket) {
     API.addTicket(ticket)
-      .then((ticket) => {
-        setTickets([...tickets, ticket]);
+      .then(() => {
         setDirty(true);
+        // navigate('/');
       })
       .catch((err) => {
         handleErrors(err);
@@ -111,9 +115,9 @@ function AppWithRouter() {
     <Container fluid>
       <Routes>
         <Route path="/" element={<GenericLayout loggedIn={loggedIn} user={user} logout={handleLogout} message={message} setMessage={setMessage} />} >
-          <Route index element={<TableLayout tickets={tickets} handleErrors={handleErrors}/>} />
+          <Route index element={<TableLayout tickets={tickets} setUpdate={setUpdate} handleErrors={handleErrors} />} />
           <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin} /> : <Navigate replace to='/' />} />
-          {/* <Route path="/add" element={loggedIn ? <AddLayout addTicket={addTicket} /> : <Navigate replace to='/login' />} /> */}
+          <Route path="/add" element={loggedIn ? <AddLayout addTicket={addTicket} /> : <Navigate replace to='/login' />} />
           <Route path="*" element={<NotFoundLayout />} />
         </Route>
       </Routes>

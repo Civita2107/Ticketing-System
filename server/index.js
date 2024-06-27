@@ -17,6 +17,7 @@ const port = 3001;
 
 const maxTitleLength = 40;
 const maxContentLength = 400;
+const allowedCategories = ['inquiry', 'maintainance', 'new feature', 'administrative', 'payment'];
 
 const errorFormatter = ({ location, msg, param, value, nestedErrors }) => {
   return `${location}[$(param)]: ${msg}`;
@@ -122,7 +123,7 @@ app.get('/tickets/:id', isLoggedIn,
     }
   });
 
-app.get('/blocks/:id',
+app.get('/blocks/:id', isLoggedIn,
   [check('id').isInt({ min: 1 })],
   async (req, res) => {
     try {
@@ -137,7 +138,14 @@ app.get('/blocks/:id',
 
 app.post('/tickets', isLoggedIn,
   [check('title').isLength({ min: 1, max: maxTitleLength }),
-  check('content').isLength({ min: 1, max: maxContentLength })],
+  check('content').isLength({ min: 1, max: maxContentLength }),
+  check('category').custom((value) => {
+    if (!allowedCategories.includes(value)) {
+      throw new Error('Invalid category');
+    }
+    return true;
+  })
+],
   async (req, res) => {
     const errors = validationResult(req).formatWith(errorFormatter);
     if (!errors.isEmpty()) {

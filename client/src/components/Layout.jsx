@@ -3,6 +3,7 @@ import { Outlet, Link, useParams, Navigate, useLocation } from 'react-router-dom
 import { LoginForm } from './Authentication';
 import { NavBar } from './Navbar';
 import { TicketTable } from './Ticket';
+import { TicketForm } from './AddTicket';
 import { useEffect } from 'react';
 import API from '../API';
 
@@ -32,24 +33,12 @@ function LoginLayout(props) {
 
 function TableLayout(props) {
 
-    useEffect(() => {
-        if (!props.dirty) { //remember to change it
-            API.getTickets()
-                .then((tickets) => {
-                    props.setTickets(tickets);
-                    props.setDirty(false);
-                })
-                .catch((err) => {
-                    props.handleErrors(err);
-                });
-        }
-    }, [props.dirty]);
     return (
         <>
             <Row>
                 <Col xs={2}/>
                 <Col>
-                    <TicketTable tickets={props.tickets} />
+                    <TicketTable tickets={props.tickets} handleErrors={props.handleErrors}/>
                 </Col>
                 <Col xs={2}/>
             </Row>

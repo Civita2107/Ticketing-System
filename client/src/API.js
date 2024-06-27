@@ -62,7 +62,6 @@ const getTickets = async () => {
     }
     return ticketWithOwner;
   }));
-  console.log(ticketsWithOwner);
   return ticketsWithOwner;
 }
 
@@ -70,11 +69,20 @@ const getTicketContent = async (ticketId) => {
   return getJson(fetch(SERVER_URL + 'blocks/' + ticketId, {
     method: 'GET',
     credentials: 'include'
-  })).then(blocks => {
-    return {
-      content: blocks.content,
-    }});
-  }
+
+  })).then( blocks => {
+    return blocks.map((blo) => {
+        const block = {
+          id: blo.id,
+          ticket_id: blo.ticket_id,
+          username: blo.block_author_username,
+          timestamp: blo.timestamp,
+          content: blo.content
+        };
+        return block;
+    })
+  });
+}
 
 function addTicket(ticket) {
   return getJson(fetch(SERVER_URL + 'tickets', {

@@ -1,38 +1,52 @@
 .ticket-table {
-    width: 100%; 
-    table-layout: fixed; 
+    width: 100%;
+    table-layout: fixed;
     overflow: hidden;
     border-collapse: separate;
 }
 
-.ticket-table td, .ticket-table th {
-    width: 50%; 
-    text-align: left; 
-    
+.ticket-table td,
+.ticket-table th {
+    width: 50%;
+    text-align: left;
+
 }
 
 .not-found-row {
-    text-align: center; /* Aligns text to the center */
-    margin-top: 20px;  /* Adds space above the text */
+    text-align: center;
+    /* Aligns text to the center */
+    margin-top: 20px;
+    /* Adds space above the text */
 }
 
 .not-found-column {
-    width: 100%; /* Sets the width of the column to 100% */
-    align-items: center; /* Aligns text to the center */
-    justify-content: center; /* Aligns text to the center */
+    width: 100%;
+    /* Sets the width of the column to 100% */
+    align-items: center;
+    /* Aligns text to the center */
+    justify-content: center;
+    /* Aligns text to the center */
 }
 
 .accordion {
-    color: #000; /* Sets the text color of the accordion */
-    cursor: pointer; /* Changes the cursor to a pointer when hovering over the accordion */
-    width: 100%; /* Sets the width of the accordion to 100% */
-    border: none; /* Removes the border from the accordion */
-    text-align: left; /* Aligns text to the left */
-    outline: none; /* Removes the outline from the accordion */
-    font-size: 16px; /* Sets the font size of the accordion */
-    transition: 0.4s; /* Adds a transition effect to the accordion */
+    color: #000;
+    /* Sets the text color of the accordion */
+    cursor: pointer;
+    /* Changes the cursor to a pointer when hovering over the accordion */
+    width: 100%;
+    /* Sets the width of the accordion to 100% */
+    border: none;
+    /* Removes the border from the accordion */
+    text-align: left;
+    /* Aligns text to the left */
+    outline: none;
+    /* Removes the outline from the accordion */
+    font-size: 16px;
+    /* Sets the font size of the accordion */
+    transition: 0.4s;
+    /* Adds a transition effect to the accordion */
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 28px; 
+    border-radius: 28px;
     overflow: hidden;
 }
 
@@ -42,3 +56,25 @@
     outline: none;
 }
 
+.form {
+  background-color: #f8f9fa; /* Light grey background */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Spacing inside the form */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  width: 350px;
+  height: 350px;
+  max-width: none; /* Maximum width of the form */
+  margin: 20px auto; /* Center form on the page */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login-button {
+    font-size: 15rem;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+}
