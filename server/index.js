@@ -207,19 +207,19 @@ app.put('/tickets/:id', isLoggedIn,
       } else if (req.body.state === "Closed") {
         newState = 0
       }
-      
+
       const newTicket = {
         category: req.body.category,
         state: newState,
         id: req.params.id
       }
-      console.log(ticket);
-      console.log(req.user);
       if (ticket.owner !== req.user.id && !req.user.admin) {
         return res.status(403).json({ error: 'User not authorized' });
       } else if ((ticket.state === 1 && ticket.owner === req.user.id) || req.user.admin) {
-        await ticketDao.updateTicket(newTicket);
-        res.json({ message: "Ticket has been updated" })
+        if ((ticket.category === newTicket.category || req.user.admin)) {
+          await ticketDao.updateTicket(newTicket);
+          res.json({ message: "Ticket has been updated" })
+        }
       }
     } catch (err) {
       console.error(err);
