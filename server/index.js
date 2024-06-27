@@ -145,7 +145,7 @@ app.post('/tickets', isLoggedIn,
     }
     return true;
   })
-],
+  ],
   async (req, res) => {
     const errors = validationResult(req).formatWith(errorFormatter);
     if (!errors.isEmpty()) {
@@ -186,8 +186,8 @@ app.post('/tickets/:id', isLoggedIn,
       // console.log(ticketDao.getTicketById(block.ticket_id))
       const ticket = await ticketDao.getTicketById(block.ticket_id)
       if (ticket.state === 1) {
-      const result = await ticketDao.addBlock(block);
-      res.json(result);
+        const result = await ticketDao.addBlock(block);
+        res.json(result);
       }
     } catch (err) {
       console.error(err);
@@ -199,25 +199,44 @@ app.put('/tickets/:id', isLoggedIn,
   [check('id').isInt({ min: 1 })],
   async (req, res) => {
     try {
-      ticket = await ticketDao.getTicketById(req.params.id);
-      if (ticket.owner !== req.user.id || !req.user.admin) {
-        return res.status(403).json({ error: 'User not authorized' });
-      } else if (ticket.state === 0 && (ticket.owner === req.user.id || req.user.admin)) {
-        await ticketDao.openTicket(req.params.id);
-        res.json({ message: 'Ticket opened' });
-      } else if (ticket.state === 1 && (ticket.owner === req.user.id || req.user.admin)) {
-        await ticketDao.closeTicket(req.params.id);
-        res.json({ message: 'Ticket closed' });
-      } else if (ticket.category !== req.body.category && req.user.admin) {
-        await ticketDao.updateCategory(req.params.id, req.body.category);
-        res.json({ message: 'Category updated' });
+      const ticket = await ticketDao.getTicketById(req.params.id);
+
+      let newState;
+      if (req.body.state === "Open") {
+        newState = 1
+      } else if (req.body.state === "Closed") {
+        newState = 0
       }
-    }
-    catch (err) {
+      
+      const newTicket = {
+        category: req.body.category,
+        state: newState,
+        id: req.params.id
+      }
+      console.log(ticket);
+      console.log(req.user);
+      if (ticket.owner !== req.user.id && !req.user.admin) {
+        return res.status(403).json({ error: 'User not authorized' });
+      } else if ((ticket.state === 1 && ticket.owner === req.user.id) || req.user.admin) {
+        await ticketDao.updateTicket(newTicket);
+        res.json({ message: "Ticket has been updated" })
+      }
+    } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Error opening ticket' });
     }
   });
+//   } else if (ticket.state === 0 && (ticket.owner === req.user.id || req.user.admin)) {
+//     await ticketDao.openTicket(req.params.id);
+//     res.json({ message: 'Ticket opened' });
+//   } else if (ticket.state === 1 && (ticket.owner === req.user.id || req.user.admin)) {
+//     await ticketDao.closeTicket(req.params.id);
+//     res.json({ message: 'Ticket closed' });
+//   } else if (ticket.category !== req.body.category && req.user.admin) {
+//     await ticketDao.updateCategory(req.params.id, req.body.category);
+//     res.json({ message: 'Category updated' });
+//   }
+// }
 
 app.post('/sessions', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {

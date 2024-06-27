@@ -43,7 +43,7 @@ function TicketRow(props) {
         <>
             <Accordion alwaysOpen style={{ margin: '1rem' }}>
                 <Accordion.Item key={ticket.id} eventKey={String(index)} className='accordion'>
-                    {user && (user.username == ticket.owner || user.admin==1) && (
+                    {user && ((user.username == ticket.owner && ticket.state == "Open") || user.admin==1) && (
                             <p><EditTicket ticket={ticket} update={update} setUpdate={setUpdate} handleErrors={handleErrors} editTicket={editTicket} /></p>)}
                     <Accordion.Header>
                         <Table className='ticket-table'>
@@ -163,21 +163,22 @@ function EditTicket(props) {
     const { ticket, handleErrors, update, setUpdate, editTicket } = props;
 
     const [modalShow, setModalShow] = useState(false);
-    const [category, setCategory] = useState('');
-    const [state, setState] = useState('');
+    const [category, setCategory] = useState(ticket.category);
+    const [state, setState] = useState(ticket.state);
 
     const handleConfirm = () => {
-        const ticket = {
+        const updatedTicket = {
             category: category,
             state: state,
+            id: ticket.id
         }
-        editTicket(ticket);
+        editTicket(updatedTicket);
         setModalShow(false);
     }
 
     return (
         <>
-            <Button className="edit-ticket-button" onClick={() => setModalShow(true)}>Edit Ticket</Button>
+            <Button className="edit-ticket-button" style={{marginLeft: '30px', marginTop: '10px'}} onClick={() => setModalShow(true)}>Edit Ticket</Button>
 
             {modalShow && (
                 <Modal show={modalShow} onHide={() => setModalShow(false)}>
@@ -187,14 +188,19 @@ function EditTicket(props) {
                     <Modal.Body>
                         <Form>
                             <Form.Group className='mb-3'>
-                                <Form.Select onChange={(e) => setCategory(e.target.value)}>
-                                    <option value="Category">Category</option>
+                                <Form.Select defaultValue={category} onChange={(e) => setCategory(e.target.value)}>
                                     <option value="inquiry">Inquiry</option>
                                     <option value="maintainance">Maintainance</option>
                                     <option value="new feature">New feature</option>
                                     <option value="administrative">Administrative</option>
                                     <option value="payment">Payment</option>
                                 </Form.Select>
+                                <Form.Check
+                                    type='checkbox'
+                                    label="ticket Open"
+                                    checked={state === "Open"}
+                                    onChange={ (e) => setState(e.target.checked ? "Open" : "Closed")}
+                                    />
                             </Form.Group>
                             <Button variant='primary' type='submit' style={{ marginRight: '10px' }} onClick={handleConfirm} onError={handleErrors}>Submit</Button>
                             <Button variant='secondary' onClick={() => setModalShow(false)}>Cancel</Button>

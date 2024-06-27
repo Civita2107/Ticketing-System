@@ -25,7 +25,7 @@ CREATE TABLE blocks (
 
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     salt TEXT NOT NULL,
     admin INTEGER NOT NULL DEFAULT 0,

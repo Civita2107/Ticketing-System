@@ -124,7 +124,7 @@ function AppWithRouter() {
   function editTicket(ticket) {
     API.editTicket(ticket)
       .then(() => {
-        setUpdate(true);
+        setDirty(true);
       })
       .catch((err) => {
         handleErrors(err);
