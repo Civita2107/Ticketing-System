@@ -5,13 +5,13 @@ import DOMPurify from 'dompurify';
 import API from '../API';
 
 function TicketTable(props) {
-    const { tickets, handleErrors, user, update, setUpdate, addBlock } = props;
+    const { tickets, handleErrors, user, update, setUpdate, addBlock, editTicket } = props;
 
     return (
         <>
             <AddButton />
             {tickets.map((ticket, index) => (
-                <TicketRow key={index} ticket={ticket} user={user} handleErrors={handleErrors} update={update} setUpdate={setUpdate} addBlock={addBlock} />
+                <TicketRow key={index} ticket={ticket} user={user} handleErrors={handleErrors} update={update} setUpdate={setUpdate} addBlock={addBlock} editTicket={editTicket} />
             ))}
         </>
     )
@@ -19,7 +19,7 @@ function TicketTable(props) {
 
 function TicketRow(props) {
 
-    const { ticket, index, handleErrors, user, update, setUpdate, addBlock } = props;
+    const { ticket, index, handleErrors, user, update, setUpdate, addBlock, editTicket } = props;
 
     const [blocks, setBlocks] = useState([]);
 
@@ -41,8 +41,10 @@ function TicketRow(props) {
 
     return (
         <>
-            <Accordion alwaysOpen style={{margin: '1rem'}}>
+            <Accordion alwaysOpen style={{ margin: '1rem' }}>
                 <Accordion.Item key={ticket.id} eventKey={String(index)} className='accordion'>
+                    {user && (user.username == ticket.owner || user.admin==1) && (
+                            <p><EditTicket ticket={ticket} update={update} setUpdate={setUpdate} handleErrors={handleErrors} editTicket={editTicket} /></p>)}
                     <Accordion.Header>
                         <Table className='ticket-table'>
                             <tbody>
@@ -70,15 +72,15 @@ function TicketRow(props) {
                         </Table>
                     </Accordion.Header>
                     {user && (
-                        <Accordion.Body style= {{ whiteSpace: "pre-line"}}>
-                        <p>{DOMPurify.sanitize(ticket.content)}</p>
-                        {blocks.map((block, index) => (
-                            <Card key={index} className='ticket-card'>
-                                { user && <BlockRow block={block} />}
-                            </Card>
-                        ))}
-                        {user && <AddBlock ticket={ticket} update={update} setUpdate={setUpdate} addBlock={addBlock} handleErrors={handleErrors}/>}
-                    </Accordion.Body>)}
+                        <Accordion.Body style={{ whiteSpace: "pre-line" }}>
+                            <p>{DOMPurify.sanitize(ticket.content)}</p>
+                            {blocks.map((block, index) => (
+                                <Card key={index} className='ticket-card'>
+                                    {user && <BlockRow block={block} />}
+                                </Card>
+                            ))}
+                            {user && ticket.state=="Open" && <AddBlock ticket={ticket} update={update} setUpdate={setUpdate} addBlock={addBlock} handleErrors={handleErrors} />}
+                        </Accordion.Body>)}
                 </Accordion.Item>
             </Accordion>
         </>
@@ -96,7 +98,7 @@ function BlockRow(props) {
                 <Card.Text>{block.timestamp}</Card.Text>
             </Card.Body>
         </>
-        
+
     )
 }
 
@@ -109,6 +111,8 @@ function AddButton() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            backgroundColor: '#355c7d',
+            background: '#355c7d',
         }}
             onClick={() => navigate('/add')}>+</Button>
     )
@@ -132,7 +136,7 @@ function AddBlock(props) {
 
     return (
         <>
-            <Button className="add-block-button" onClick={ () => setModalShow(true)}>Add Block</Button>
+            <Button className="add-block-button" onClick={() => setModalShow(true)}>Add Block</Button>
 
             {modalShow && (
                 <Modal show={modalShow} onHide={() => setModalShow(false)}>
@@ -143,9 +147,56 @@ function AddBlock(props) {
                         <Form>
                             <Form.Group className='mb-3'>
                                 <Form.Label>Content</Form.Label>
-                                <Form.Control as='textarea' placeholder='Enter content' onChange={ (e) => setContent(e.target.value)}/>
+                                <Form.Control as='textarea' placeholder='Enter content' onChange={(e) => setContent(e.target.value)} />
                             </Form.Group>
-                            <Button variant='primary' type='submit' style={{marginRight: '10px'}} onClick={handleConfirm} onError={handleErrors}>Submit</Button>
+                            <Button variant='primary' type='submit' style={{ marginRight: '10px' }} onClick={handleConfirm} onError={handleErrors}>Submit</Button>
+                            <Button variant='secondary' onClick={() => setModalShow(false)}>Cancel</Button>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+            )}
+        </>
+    )
+}
+
+function EditTicket(props) {
+    const { ticket, handleErrors, update, setUpdate, editTicket } = props;
+
+    const [modalShow, setModalShow] = useState(false);
+    const [category, setCategory] = useState('');
+    const [state, setState] = useState('');
+
+    const handleConfirm = () => {
+        const ticket = {
+            category: category,
+            state: state,
+        }
+        editTicket(ticket);
+        setModalShow(false);
+    }
+
+    return (
+        <>
+            <Button className="edit-ticket-button" onClick={() => setModalShow(true)}>Edit Ticket</Button>
+
+            {modalShow && (
+                <Modal show={modalShow} onHide={() => setModalShow(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Edit Ticket</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group className='mb-3'>
+                                <Form.Select onChange={(e) => setCategory(e.target.value)}>
+                                    <option value="Category">Category</option>
+                                    <option value="inquiry">Inquiry</option>
+                                    <option value="maintainance">Maintainance</option>
+                                    <option value="new feature">New feature</option>
+                                    <option value="administrative">Administrative</option>
+                                    <option value="payment">Payment</option>
+                                </Form.Select>
+                            </Form.Group>
+                            <Button variant='primary' type='submit' style={{ marginRight: '10px' }} onClick={handleConfirm} onError={handleErrors}>Submit</Button>
                             <Button variant='secondary' onClick={() => setModalShow(false)}>Cancel</Button>
                         </Form>
                     </Modal.Body>

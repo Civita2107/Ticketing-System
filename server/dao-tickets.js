@@ -107,6 +107,18 @@ exports.updateCategory = (ticketId, category) => {
     });
 }
 
+exports.updateTicket = (ticket) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE tickets SET title = ?, content = ?, category = ? WHERE id = ?';
+        db.run(sql, [ticket.title, ticket.content, ticket.category, ticket.id], function (err) {
+            if (err) {
+                reject(err);
+            }
+            resolve(this.lastID);
+        });
+    });
+}
+
 exports.addBlock = (block) => {
     return new Promise((resolve, reject) => {
         if (block.content === undefined || block.content === '') {

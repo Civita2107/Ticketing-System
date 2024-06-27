@@ -183,8 +183,12 @@ app.post('/tickets/:id', isLoggedIn,
       content: req.body.content
     }
     try {
+      // console.log(ticketDao.getTicketById(block.ticket_id))
+      const ticket = await ticketDao.getTicketById(block.ticket_id)
+      if (ticket.state === 1) {
       const result = await ticketDao.addBlock(block);
       res.json(result);
+      }
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Error adding block' });

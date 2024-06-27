@@ -121,11 +121,21 @@ function AppWithRouter() {
       });
   }
 
+  function editTicket(ticket) {
+    API.editTicket(ticket)
+      .then(() => {
+        setUpdate(true);
+      })
+      .catch((err) => {
+        handleErrors(err);
+      });
+  }
+
   return (
     <Container fluid>
       <Routes>
         <Route path="/" element={<GenericLayout loggedIn={loggedIn} user={user} logout={handleLogout} message={message} setMessage={setMessage} />} >
-          <Route index element={<TableLayout tickets={tickets} user={user} update={update} setUpdate={setUpdate} addBlock={addBlock} handleErrors={handleErrors} />} />
+          <Route index element={<TableLayout tickets={tickets} user={user} update={update} setUpdate={setUpdate} addBlock={addBlock} editTicket={editTicket} handleErrors={handleErrors} />} />
           <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin} /> : <Navigate replace to='/' />} />
           <Route path="/add" element={loggedIn ? <AddLayout addTicket={addTicket} /> : <Navigate replace to='/login' />} />
           <Route path="*" element={<NotFoundLayout />} />

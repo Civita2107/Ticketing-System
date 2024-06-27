@@ -106,6 +106,17 @@ function addBlock(block) {
   }));
 }
 
+function editTicket(ticket) {
+  return getJson(fetch(SERVER_URL + 'tickets/' + ticket.id, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify(ticket)
+  }));
+}
+
 const logIn = async (credentials) => {
     return getJson(fetch(SERVER_URL + 'sessions', {
         method: 'POST',
@@ -131,5 +142,5 @@ const getUserInfo = async () => {
   }));
 }
 
-const API = { logIn, logOut, getUserInfo, getTickets, addTicket, addBlock, getTicketContent };
+const API = { logIn, logOut, getUserInfo, getTickets, addTicket, addBlock, getTicketContent, editTicket };
 export default API;

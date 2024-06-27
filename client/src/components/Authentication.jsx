@@ -71,7 +71,7 @@ function LogoutButton(props) {
 function LoginButton() {
     const navigate = useNavigate();
     return (
-        <Button variant='primary' onClick={ () => navigate('/login')}>Login</Button>
+        <Button variant='primary' style={{backgroundColor: '#f8b195'}} onClick={ () => navigate('/login')}>Login</Button>
     );
 }
 
