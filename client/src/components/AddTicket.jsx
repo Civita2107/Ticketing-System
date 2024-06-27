@@ -75,7 +75,7 @@ const TicketForm = (props) => {
       className="modal show"
       style={{ display: 'block', position: 'initial' }}
     >
-      <Modal show={modalShow} onHide={handleCancel} >
+      <Modal show={modalShow} onHide={handleCancel} keyboard={false} backdrop={false} >
         <Modal.Header closeButton>
           <Modal.Title>Add ticket confirmation</Modal.Title>
         </Modal.Header>

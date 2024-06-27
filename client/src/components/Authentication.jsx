@@ -22,7 +22,8 @@ function LoginForm(props) {
             return;
         } else {
             props.login(credentials).then(() => navigate("/")).catch((err) => {
-                setErrorMessage(err.error);
+                console.log(err);
+                setErrorMessage(err.error.message);
             });
         }
     }
@@ -35,12 +36,15 @@ function LoginForm(props) {
                 <h1 className='pb-3 text-center'>Login</h1>
 
                 <Form onSubmit={handleSubmit}>
-                    {errorMessage ? <Alert dismissible onClose={() => setErrorMessage('')} variant='danger'>{errorMessage}</Alert> : null}
+                    {console.log(errorMessage)}
+                    {errorMessage && (
+                     <Alert dismissible onClose={() => setErrorMessage('')} variant='danger'>{errorMessage}</Alert> 
+                    )}
                     <Form.Group className='mb-3' controlId="formBasicUsername">
                         <Form.Label>Username</Form.Label>
                         <div className="input-group">
                             <div className="input-group-prepend">
-                                <span className="input-group-text" id="basic-addon1"><FaUser /></span>
+                                <span className="input-group-text" id="basic-addon1"><FaUser style={{ fontSize: '1.5rem', height: '100%' }} /></span>
                             </div>
                             <Form.Control type='text' placeholder='Enter username' value={username} onChange={(e) => setUsername(e.target.value)} />
                         </div>
@@ -49,7 +53,7 @@ function LoginForm(props) {
                         <Form.Label>Password</Form.Label>
                         <div className="input-group">
                             <div className="input-group-prepend">
-                                <span className="input-group-text" id="basic-addon2"><FaLock /></span>
+                                <span className="input-group-text" id="basic-addon2"><FaLock style={{ fontSize: '1.5rem', height: '100%' }} /></span>
                             </div>
                             <Form.Control type='password' placeholder='Enter password' value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
