@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Form, Button, Alert, Col, Row } from 'react-bootstrap';
+import { Card, Form, Button, Alert, Col, Row } from 'react-bootstrap';
+import { FaUser, FaLock } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 function LoginForm(props) {
@@ -28,28 +29,37 @@ function LoginForm(props) {
 
 
     return (
-        <Row>
-            <Col xs={4}></Col>
-            <Col xs={4}>
-                <h1 className='pb-3'>Login</h1>
+        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "90vh"}}>
+        <Card style={{ width: '22rem', boxShadow: "0 4px 8px rgba(0,0,0,0.1)" }}>
+            <Card.Body>
+                <h1 className='pb-3 text-center'>Login</h1>
 
                 <Form onSubmit={handleSubmit}>
-                    {errorMessage ? <Alert dismissable onClose={() => setErrorMessage('')} variant='danger'>{errorMessage}</Alert> : null}
-                    <Form.Group className='mb-3'>
+                    {errorMessage ? <Alert dismissible onClose={() => setErrorMessage('')} variant='danger'>{errorMessage}</Alert> : null}
+                    <Form.Group className='mb-3' controlId="formBasicUsername">
                         <Form.Label>Username</Form.Label>
-                        <Form.Control type='text' placeholder='Enter username' value={username} onChange={(e) => setUsername(e.target.value)} />
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="basic-addon1"><FaUser /></span>
+                            </div>
+                            <Form.Control type='text' placeholder='Enter username' value={username} onChange={(e) => setUsername(e.target.value)} />
+                        </div>
                     </Form.Group>
-                    <Form.Group className='mb-3'>
+                    <Form.Group className='mb-3' controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type='password' placeholder='Enter password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="basic-addon2"><FaLock /></span>
+                            </div>
+                            <Form.Control type='password' placeholder='Enter password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                        </div>
                     </Form.Group>
-                    <Button className='mb-3' type='submit'>Login</Button>
-
+                    <Button className='w-100' type='submit' style={{ backgroundColor: "#007bff", borderColor: "#007bff" }}>Login</Button>
                 </Form>
-            </Col>
-            <Col xs={4}></Col>
-        </Row>
-    );
+            </Card.Body>
+        </Card>
+    </div>
+    ) 
 }
 
 function LogoutButton(props) {

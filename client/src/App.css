@@ -1,3 +1,27 @@
+body {
+    background-color: #f8b195 !important;
+    /* Sets the background color of the page */
+    height: 100%;
+    /* Sets the height of the page to 100% */
+    margin: 0;
+    /* Removes the margin from the page */
+    padding: 0;
+    /* Removes the padding from the page */
+}
+
+.ticket-navbar {
+    background-color: #355c7d !important;
+    /* Sets the background color of the navbar */
+    color: #fff;
+    /* Sets the text color of the navbar */
+    padding: 10px 0;
+    /* Adds padding to the top and bottom of the navbar */
+    text-align: center;
+    /* Aligns text to the center */
+    font-size: 1.5rem;
+    /* Sets the font size of the navbar */
+}
+
 .ticket-table {
     width: 100%;
     table-layout: fixed;
@@ -56,8 +80,12 @@
     outline: none;
 }
 
+.ticket-card {
+    margin-bottom: 1rem;
+}
+
 .form {
-  background-color: #f8f9fa; /* Light grey background */
+  background-color: #f8f9fa !important; /* Light grey background */
   border-radius: 8px; /* Rounded corners */
   padding: 20px; /* Spacing inside the form */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
@@ -71,7 +99,7 @@
   transform: translate(-50%, -50%);
 }
 
-.login-button {
+.add-button {
     font-size: 15rem;
     padding: 10px 20px;
     display: flex;

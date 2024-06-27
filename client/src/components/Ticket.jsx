@@ -1,17 +1,17 @@
-import { Table, Card, Button, Accordion } from 'react-bootstrap';
+import { Table, Card, Button, Accordion, Modal, Form } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import API from '../API';
 
 function TicketTable(props) {
-    const { tickets, handleErrors } = props;
+    const { tickets, handleErrors, user, update, setUpdate, addBlock } = props;
 
     return (
         <>
             <AddButton />
             {tickets.map((ticket, index) => (
-                <TicketRow key={index} ticket={ticket} handleErrors={handleErrors} />
+                <TicketRow key={index} ticket={ticket} user={user} handleErrors={handleErrors} update={update} setUpdate={setUpdate} addBlock={addBlock} />
             ))}
         </>
     )
@@ -19,13 +19,12 @@ function TicketTable(props) {
 
 function TicketRow(props) {
 
-    const { ticket, index, handleErrors } = props;
+    const { ticket, index, handleErrors, user, update, setUpdate, addBlock } = props;
 
     const [blocks, setBlocks] = useState([]);
-    const [update, setUpdate] = useState(true);
 
     useEffect(() => {
-        if (update) {
+        if (update && user) {
             API.getTicketContent(ticket.id)
                 .then((blocks) => {
                     setBlocks(blocks);
@@ -42,8 +41,8 @@ function TicketRow(props) {
 
     return (
         <>
-            <Accordion alwaysOpen>
-                <Accordion.Item key={ticket.id} eventKey={String(index)} className='accordion mt-3'>
+            <Accordion alwaysOpen style={{margin: '1rem'}}>
+                <Accordion.Item key={ticket.id} eventKey={String(index)} className='accordion'>
                     <Accordion.Header>
                         <Table className='ticket-table'>
                             <tbody>
@@ -70,15 +69,16 @@ function TicketRow(props) {
                             </tbody>
                         </Table>
                     </Accordion.Header>
-                    <Accordion.Body style= {{ whiteSpace: "pre-line"}}>
-                        {DOMPurify.sanitize(ticket.content)}
+                    {user && (
+                        <Accordion.Body style= {{ whiteSpace: "pre-line"}}>
+                        <p>{DOMPurify.sanitize(ticket.content)}</p>
                         {blocks.map((block, index) => (
-                            <Card key={index}>
-                                <BlockRow block={block} />
+                            <Card key={index} className='ticket-card'>
+                                { user && <BlockRow block={block} />}
                             </Card>
                         ))}
-                    </Accordion.Body>
-
+                        {user && <AddBlock ticket={ticket} update={update} setUpdate={setUpdate} addBlock={addBlock} handleErrors={handleErrors}/>}
+                    </Accordion.Body>)}
                 </Accordion.Item>
             </Accordion>
         </>
@@ -95,8 +95,8 @@ function BlockRow(props) {
                 <Card.Text style={{ whiteSpace: "pre-line" }}>{DOMPurify.sanitize(block.content)}</Card.Text>
                 <Card.Text>{block.timestamp}</Card.Text>
             </Card.Body>
-
         </>
+        
     )
 }
 
@@ -104,13 +104,54 @@ function AddButton() {
     const navigate = useNavigate();
 
     return (
-        <Button className="login-button" style={{
+        <Button className="add-button" style={{
             fontSize: "1.5rem", padding: '10px 20px', position: 'fixed', top: 70, right: 15,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
         }}
             onClick={() => navigate('/add')}>+</Button>
+    )
+}
+
+function AddBlock(props) {
+
+    const { ticket, handleErrors, update, setUpdate, addBlock } = props;
+
+    const [modalShow, setModalShow] = useState(false);
+    const [content, setContent] = useState('');
+
+    const handleConfirm = () => {
+        const block = {
+            content: content,
+            ticket_id: ticket.id,
+        }
+        addBlock(block);
+        setModalShow(false);
+    }
+
+    return (
+        <>
+            <Button className="add-block-button" onClick={ () => setModalShow(true)}>Add Block</Button>
+
+            {modalShow && (
+                <Modal show={modalShow} onHide={() => setModalShow(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Add Block</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group className='mb-3'>
+                                <Form.Label>Content</Form.Label>
+                                <Form.Control as='textarea' placeholder='Enter content' onChange={ (e) => setContent(e.target.value)}/>
+                            </Form.Group>
+                            <Button variant='primary' type='submit' style={{marginRight: '10px'}} onClick={handleConfirm} onError={handleErrors}>Submit</Button>
+                            <Button variant='secondary' onClick={() => setModalShow(false)}>Cancel</Button>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+            )}
+        </>
     )
 }
 

@@ -96,7 +96,7 @@ function addTicket(ticket) {
 }
 
 function addBlock(block) {
-  return getJson(fetch(SERVER_URL + 'tickets/:id', {
+  return getJson(fetch(SERVER_URL + 'tickets/' + block.ticket_id, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

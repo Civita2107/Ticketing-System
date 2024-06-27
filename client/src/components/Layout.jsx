@@ -38,7 +38,7 @@ function TableLayout(props) {
             <Row>
                 <Col xs={2}/>
                 <Col>
-                    <TicketTable tickets={props.tickets} handleErrors={props.handleErrors}/>
+                    <TicketTable tickets={props.tickets} user={props.user} handleErrors={props.handleErrors} update={props.update} setUpdate={props.setUpdate} addBlock={props.addBlock}/>
                 </Col>
                 <Col xs={2}/>
             </Row>
