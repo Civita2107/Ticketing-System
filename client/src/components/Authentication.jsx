@@ -36,7 +36,6 @@ function LoginForm(props) {
                 <h1 className='pb-3 text-center'>Login</h1>
 
                 <Form onSubmit={handleSubmit}>
-                    {console.log(errorMessage)}
                     {errorMessage && (
                      <Alert dismissible onClose={() => setErrorMessage('')} variant='danger'>{errorMessage}</Alert> 
                     )}

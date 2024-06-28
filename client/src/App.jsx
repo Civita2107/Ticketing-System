@@ -94,7 +94,7 @@ function AppWithRouter() {
 
   useEffect(() => {
     if (tickets) {
-      if (authToken) {
+      if (authToken && user.admin) {
         if (Array.isArray(tickets)) {
           for (const ticket of tickets) {
             API.getStats(authToken, ticket)
