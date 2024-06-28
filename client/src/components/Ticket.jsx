@@ -117,10 +117,10 @@ function AddButton() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#355c7d',
             background: '#355c7d',
+            border: '#355c7d'
         }}
-            onClick={() => navigate('/add')}>+</Button>
+            onClick={() => navigate('/add')}>&#43;</Button>
     )
 }
 
