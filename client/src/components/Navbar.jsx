@@ -24,12 +24,12 @@ function NavBar(props) {
               {props.loggedIn ? (
                 <>
                   <FaUserCircle style={{ marginTop: '6px', marginRight: '1rem' }} />
-                  <span style={{ marginRight: '1rem', fontSize: '22px' }}>{props.user.username}</span>
+                  <span style={{ marginRight: '1rem', fontSize: '22px', marginTop: '2px' }}>{props.user.username}</span>
                   <LogoutButton logout={props.logout} />
                 </>
               ) : (
                 <>
-                  <FaSignInAlt style={{ marginRight: '8px', color: '#ffffff', textAlign: '', marginTop: '8px' }} />
+                  <FaSignInAlt style={{ marginRight: '8px', color: '#ffffff', textAlign: '', marginTop: '6px' }} />
                   <LoginButton />
                 </>
               )}

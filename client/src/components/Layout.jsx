@@ -9,15 +9,15 @@ import API from '../API';
 
 function NotFoundLayout() {
     return (
-        <Row className='not-found-row'>
-            <Col xs={2}></Col>
-            <Col xs={8} className='not-found-column'>
-                <h1>404 Not Found</h1>
-                <p>The page you are looking for does not exist.</p>
-                <Link to='/'>Go back to home</Link>
-            </Col>
-            <Col xs={2}></Col>
-        </Row>
+        <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
+            <Row>
+                <Col className='text-center'>
+                    <h1>404 Not Found</h1>
+                    <p>The page you are looking for does not exist.</p>
+                    <Link to='/'>Go back to home</Link>
+                </Col>
+            </Row>
+        </Container>
     );
 }
 
