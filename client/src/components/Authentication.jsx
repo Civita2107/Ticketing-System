@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Form, Button, Alert, Col, Row } from 'react-bootstrap';
+import { Card, Form, Button, Alert } from 'react-bootstrap';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 

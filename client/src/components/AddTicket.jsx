@@ -1,6 +1,7 @@
 import { Button, Form, Modal, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import API from '../API';
 
 const TicketForm = (props) => {
     const navigate = useNavigate();
@@ -10,8 +11,9 @@ const TicketForm = (props) => {
     const [content, setContent] = useState('');
     const [category, setCategory] = useState('');
     const [modalShow, setModalShow] = useState(false);
+    const [estimation, setEstimation] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (!title) {
@@ -25,6 +27,10 @@ const TicketForm = (props) => {
         } else if (content.length > 400) {
             setErrorMessage('Content is too long');
         } else {
+            const toPass = { title: title, category: category };
+            console.log(props.authToken);
+            const newStat = await API.getStats(props.authToken, toPass);
+            setEstimation(newStat.result);
             setModalShow(true);
         }
     }
@@ -84,6 +90,7 @@ const TicketForm = (props) => {
           <p>Title: {title}</p>
           <p>Content: {content}</p>
           <p>Category: {category}</p>
+          <p>Resolution estimation: {props.user.admin ? `${Math.floor(estimation / 24)} days ${estimation % 24} hours` : `${estimation} days`}</p>
         </Modal.Body>
 
         <Modal.Footer>

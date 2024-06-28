@@ -5,13 +5,13 @@ import DOMPurify from 'dompurify';
 import API from '../API';
 
 function TicketTable(props) {
-    const { tickets, handleErrors, user, update, setUpdate, addBlock, editTicket } = props;
+    const { tickets, handleErrors, user, update, setUpdate, addBlock, editTicket, authToken, setAuthToken, stats, setStats } = props;
 
     return (
         <>
             <AddButton />
             {tickets.map((ticket, index) => (
-                <TicketRow key={index} ticket={ticket} user={user} handleErrors={handleErrors} update={update} setUpdate={setUpdate} addBlock={addBlock} editTicket={editTicket} />
+                <TicketRow key={index} ticket={ticket} user={user} handleErrors={handleErrors} update={update} setUpdate={setUpdate} addBlock={addBlock} editTicket={editTicket} stats={stats} setStats={setStats} />
             ))}
         </>
     )
@@ -19,7 +19,9 @@ function TicketTable(props) {
 
 function TicketRow(props) {
 
-    const { ticket, index, handleErrors, user, update, setUpdate, addBlock, editTicket } = props;
+    const { ticket, index, handleErrors, user, update, setUpdate, addBlock, editTicket, stats, setStats } = props;
+
+    const estimationOfClosure = stats && stats[ticket.id] ? stats[ticket.id].result : 'Computing...';
 
     const [blocks, setBlocks] = useState([]);
 
@@ -35,8 +37,6 @@ function TicketRow(props) {
                 });
         }
     });
-
-
 
 
     return (
@@ -68,6 +68,12 @@ function TicketRow(props) {
                                     <th>Creation Date</th>
                                     <td>{ticket.timestamp}</td>
                                 </tr>
+                                {user?.admin ? (
+                                    <tr>
+                                        <th>Resolution estimation</th>
+                                        <td>{Math.floor(estimationOfClosure / 24)} days {estimationOfClosure % 24} hours</td>
+                                    </tr>
+                                ) : null}
                             </tbody>
                         </Table>
                     </Accordion.Header>

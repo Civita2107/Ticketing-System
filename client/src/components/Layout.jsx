@@ -36,19 +36,19 @@ function TableLayout(props) {
     return (
         <>
             <Row>
-                <Col xs={2}/>
+                <Col xs={2} />
                 <Col>
-                    <TicketTable tickets={props.tickets} user={props.user} handleErrors={props.handleErrors} update={props.update} setUpdate={props.setUpdate} addBlock={props.addBlock} editTicket={props.editTicket}/>
+                    <TicketTable tickets={props.tickets} user={props.user} handleErrors={props.handleErrors} update={props.update} setUpdate={props.setUpdate} addBlock={props.addBlock} editTicket={props.editTicket} authToken={props.authToken} setAuthToken={props.setAuthToken} stats={props.stats} setStats={props.setStats} />
                 </Col>
-                <Col xs={2}/>
+                <Col xs={2} />
             </Row>
         </>
     );
 }
 
-function AddLayout (props) {
+function AddLayout(props) {
     return (
-        <TicketForm addTicket={props.addTicket} />
+        <TicketForm addTicket={props.addTicket} authToken={props.authToken} setAuthToken={props.setAuthToken} user={props.user} />
     );
 }
 
@@ -56,20 +56,20 @@ function GenericLayout(props) {
 
     return (
         <>
-        <Row>
-            <Col>
-                <NavBar loggedIn={props.loggedIn} user={props.user} logout={props.logout} />
-            </Col>
-        </Row>
-        
-              <div className='mt-5'>  
-                <Container>
             <Row>
                 <Col>
-                    <Outlet />
+                    <NavBar loggedIn={props.loggedIn} user={props.user} logout={props.logout} />
                 </Col>
             </Row>
-            </Container>
+
+            <div className='mt-5'>
+                <Container>
+                    <Row>
+                        <Col>
+                            <Outlet />
+                        </Col>
+                    </Row>
+                </Container>
             </div>
         </>
     );

@@ -41,15 +41,3 @@ exports.loginUser = (username, password) => {
         });
     });
 }
-
-// exports.getUserById(2).then((user) => {
-//     console.log(user);
-// }).catch((err) => {
-//     console.log(err);
-// });
-
-// exports.loginUser('toad', 'password').then((user) => {
-//     console.log(user);
-// }).catch((err) => {
-//     console.log(err);
-// });

@@ -25,9 +25,12 @@ POST http://localhost:3001/sessions HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "maro",
+    "username": "peach",
     "password": "password"
 }
 
 ###
 GET http://localhost:3001/blocks/1 HTTP/1.1
+
+###
+GET http://localhost:3001/auth-token HTTP/1.1

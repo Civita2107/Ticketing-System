@@ -5,11 +5,14 @@ const morgan = require('morgan');
 const { check, validationResult } = require('express-validator');
 const session = require('express-session');
 const cors = require('cors');
+const jsonwebtoken = require('jsonwebtoken');
+
+const jwtSecret = 'vN9yJqR2Hg8zB5kLxP3wS7bA8dX6tCvDwJqF9rYlMkUzCnE2NsQwT7gZf6XpYjV3';
+const expireTime = 60;
 
 const ticketDao = require('./dao-tickets');
 const userDao = require('./dao-users');
 
-// init express
 const app = new express();
 app.use(morgan('dev'));
 app.use(express.json());
@@ -183,7 +186,6 @@ app.post('/tickets/:id', isLoggedIn,
       content: req.body.content
     }
     try {
-      // console.log(ticketDao.getTicketById(block.ticket_id))
       const ticket = await ticketDao.getTicketById(block.ticket_id)
       if (ticket.state === 1) {
         const result = await ticketDao.addBlock(block);
@@ -267,6 +269,19 @@ app.delete('/sessions/current', (req, res) => {
   req.logout(() => {
     res.status(200).json({ message: 'Logout successful' });
   });
+});
+
+app.get('/auth-token', isLoggedIn, (req, res) => {
+  let auth = req.user.admin;
+  let userId = req.user.id;
+
+  const payloadToSign = {
+    admin: auth,
+    user: userId
+  }
+  const jkwToken = jsonwebtoken.sign(payloadToSign, jwtSecret, { expiresIn: expireTime });
+
+  res.json({token: jkwToken});
 });
 
 // activate the server
