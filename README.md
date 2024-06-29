@@ -50,8 +50,8 @@
 
 ## Main React Components
 
-- `TicketTable` (in `Ticket.jsx`): it starts the map for every ticket of the list
-- `GreatButton` (in `.jsx`): component purpose and main functionality
+- `TicketTable` (in `Ticket.jsx`): starts the map for every ticket of the list
+- `TicketRow` (in `Ticket.jsx`): displays an accordion for each ticket
 - ...
 
 (only _main_ components, minor ones may be skipped)
