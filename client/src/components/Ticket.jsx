@@ -1,4 +1,4 @@
-import { Table, Card, Button, Accordion, Modal, Form } from 'react-bootstrap';
+import { Table, Card, Button, Accordion, Modal, Form, Alert } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify';
@@ -135,14 +135,23 @@ function AddBlock(props) {
 
     const [modalShow, setModalShow] = useState(false);
     const [content, setContent] = useState('');
+    const [errorMessage, setErrorMessage] = useState('')
 
-    const handleConfirm = () => {
-        const block = {
-            content: content,
-            ticket_id: ticket.id,
+    const handleConfirm = (event) => {
+        event.preventDefault();
+        if (!content) {
+            setErrorMessage('Content is required');
+            return;
+        } else {
+            const block = {
+                content: content,
+                ticket_id: ticket.id,
+            }
+            addBlock(block);
+            setModalShow(false);
+            setContent('');
+            setErrorMessage('');
         }
-        addBlock(block);
-        setModalShow(false);
     }
 
     return (
@@ -151,17 +160,21 @@ function AddBlock(props) {
 
             {modalShow && (
                 <Modal show={modalShow} onHide={() => setModalShow(false)}>
+                    
                     <Modal.Header closeButton>
                         <Modal.Title>Add Block</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        {errorMessage && (
+                        <Alert dismissible onClose={() => setErrorMessage('')} variant='danger'>{errorMessage}</Alert>
+                    )}
                         <Form>
                             <Form.Group className='mb-3'>
                                 <Form.Label>Content</Form.Label>
-                                <Form.Control as='textarea' placeholder='Enter content' onChange={(e) => setContent(e.target.value)} />
+                                <Form.Control as='textarea' placeholder='Enter content' onChange={(e) => {setContent(e.target.value); setErrorMessage('')}} />
                             </Form.Group>
                             <Button variant='primary' type='submit' style={{ marginRight: '10px' }} onClick={handleConfirm} onError={handleErrors}>Submit</Button>
-                            <Button variant='secondary' onClick={() => setModalShow(false)}>Cancel</Button>
+                            <Button variant='secondary' onClick={() => {setModalShow(false); setErrorMessage('')}}>Cancel</Button>
                         </Form>
                     </Modal.Body>
                 </Modal>

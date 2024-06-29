@@ -62,7 +62,6 @@ const TicketForm = (props) => {
 
   return (
     <>
-      {errorMessage ? <Alert variant='danger' onClose={() => setErrorMessage('')} dismissible>{errorMessage}</Alert> : false}
       <Form onSubmit={handleSubmit} className='form'>
         <Form.Group className="mb-3">
           <Form.Label>Title</Form.Label>
@@ -85,6 +84,10 @@ const TicketForm = (props) => {
         </Form.Group>
         <Button variant="primary" type="submit" style={{ marginRight: '10px' }}>Submit</Button>
         <Button variant="secondary" onClick={() => navigate('/')}>Cancel</Button>
+        <p></p>
+        {errorMessage && (
+                     <Alert dismissible onClose={() => setErrorMessage('')} variant='danger'>{errorMessage}</Alert> 
+                    )}
       </Form>
 
       <div
