@@ -45,10 +45,24 @@ INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (
 INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (0, 'administrative', 3, 'Change email address', '2024-06-13 00:06:30', 'I need to change my email address in the system. Can you help me?');
 INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (1, 'payment', 1, 'Payment not processed', '2024-06-13 00:07:56', 'I made a payment but it has not been processed yet. Can you check on this?');
 INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (0, 'inquiry', 1, 'How to update the software?', '2024-06-13 00:08:45', 'I need to update the software to the latest version. Can you guide me through the process?');
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (1, 'maintainance', 4, 'Software crashes randomly', '2024-06-13 00:09:30', 'The software crashes randomly while I am using it. Can you help me fix this issue?');
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (0, 'new feature', 4, 'Feature request: Export data', '2024-06-13 00:10:15', 'I would like to request a feature to export data from the software. Can you add this feature?');
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (1, 'payment', 5, 'Payment confirmation', '2024-06-13 00:11:20', 'I have not received a confirmation for my payment. Can you check on this?');
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (0, 'inquiry', 5, 'How to reset password?', '2024-06-13 00:12', 'I forgot my password and I need to reset it. Can you help me with the process?');
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (1, 'maintainance', 6, 'Software freezes on startup', '2024-06-13 00:13:30', 'The software freezes every time I try to start it. Can you help me fix this issue?');
+INSERT INTO tickets (state, category, owner, title, timestamp, content) VALUES (0, 'new feature', 6, 'Feature request: Import data', '2024-06-13 00:14:15', 'I would like to request a feature to import data into the software.
+Can you add this feature?');
 
 INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (1, 1, '2024-06-21 00:12:32', 'Sure! Here are the steps to use the software: 1. Open the software. 2. Click on the "Help" menu. 3. Select "User Guide" from the menu. 4. Read the user guide for instructions on how to use the software.');
 INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (2, 1, '2024-06-25 23:12:55', 'I will look into the issue and get back to you with a solution.');
-INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (3, 1, '2024-06-26 10:45:30', 'Thank you for the suggestion! I will add dark mode to the feature request list.');
-INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (1, 1, '2024-06-27 08:30:15', 'I have updated your email address in the system.');
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (3, 1, '2024-06-26 10:45:30', 'Thank you for the suggestion!
+I will add dark mode to the feature request list.');
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (1, 2, '2024-06-27 08:30:15', 'I have updated your email address in the system.');
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (1, 1, '2024-06-28 14:20:45', 'I will check on the payment status and get back to you.');
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (2, 2, '2024-06-29 09:10:20', 'The issue has been resolved.
+Please try starting the software again.');
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (3, 2, '2024-06-30 15:30:10', 'Dark mode has been added to the feature request list.');
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (2, 4, '2024-07-01 11:45:30', 'The software should now start without crashing.
+Let me know if you encounter any more issues.');
 
 COMMIT;

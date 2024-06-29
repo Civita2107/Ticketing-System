@@ -67,7 +67,7 @@ function LoginForm(props) {
 
 function LogoutButton(props) {
     return (
-        <Button variant='danger' onClick={props.logout}>Logout</Button>
+        <Button variant='danger' onClick={props.logout} style={{backgroundColor: '#c06c84', border: '#c06c84'}}>Logout</Button>
     );
 }
 

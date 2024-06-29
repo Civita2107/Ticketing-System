@@ -79,7 +79,12 @@ function TicketRow(props) {
                     </Accordion.Header>
                     {user && (
                         <Accordion.Body style={{ whiteSpace: "pre-line" }}>
-                            <p>{DOMPurify.sanitize(ticket.content)}</p>
+                            <p style={{
+                                backgroundColor: "#f0f0f0", // Light grey background
+                                padding: "10px", // Adds space inside the <p> tag
+                                borderRadius: "5px", // Rounds the corners of the background
+                                lineHeight: "1.6"
+                            }}>{DOMPurify.sanitize(ticket.content)}</p>
                             {blocks.map((block, index) => (
                                 <Card key={index} className='ticket-card'>
                                     {user && <BlockRow block={block} />}

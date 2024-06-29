@@ -228,17 +228,6 @@ app.put('/tickets/:id', isLoggedIn,
       res.status(500).json({ error: 'Error opening ticket' });
     }
   });
-//   } else if (ticket.state === 0 && (ticket.owner === req.user.id || req.user.admin)) {
-//     await ticketDao.openTicket(req.params.id);
-//     res.json({ message: 'Ticket opened' });
-//   } else if (ticket.state === 1 && (ticket.owner === req.user.id || req.user.admin)) {
-//     await ticketDao.closeTicket(req.params.id);
-//     res.json({ message: 'Ticket closed' });
-//   } else if (ticket.category !== req.body.category && req.user.admin) {
-//     await ticketDao.updateCategory(req.params.id, req.body.category);
-//     res.json({ message: 'Category updated' });
-//   }
-// }
 
 app.post('/sessions', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
