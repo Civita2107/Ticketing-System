@@ -1,0 +1,9 @@
+###
+POST http://localhost:3002/stats HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6MCwidXNlciI6MywiaWF0IjoxNzE5NTY3MzE1LCJleHAiOjE3MTk1NjczNzV9.v2xQSnfgvhMvz9PjJZG75fdpr_G-Iuf2BvuZcjvW6hY
+
+{
+    "title": "New Ticket",
+    "category": "inquiry" 
+}
