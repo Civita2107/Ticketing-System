@@ -50,18 +50,22 @@
 
 ## Main React Components
 
+- `GenericLayout` (in `Layout.jsx`): default route, contains the navbar and the outlet to display every other component (index is TicketTable)
 - `TicketTable` (in `Ticket.jsx`): starts the map for every ticket of the list
-- `TicketRow` (in `Ticket.jsx`): displays an accordion for each ticket
-- ...
-
-(only _main_ components, minor ones may be skipped)
+- `TicketRow` (in `Ticket.jsx`): displays an accordion for each ticket, its expansion contains the initial content and the ticket's relative blocks if the user is logged
+- `LoginForm` (in `Authentication.jsx`): shows the login form
+- `TicketForm` (in `AddTicket.jsx`): provides the form to create a new ticket
 
 ## Screenshot
 
-![Screenshot](./img/screenshot.png)
+![Home Screenshot](./img/home_screenshot.png)
+![Form Screenshot](./img/form_screenshot.png)
 
 ## Users Credentials
 
-- username, password (plus any other requested info which depends on the text)
-- username, password (plus any other requested info which depends on the text)
-
+- username: mario, password: password (admin)
+- username: luigi, password: password
+- username: peach, password: password
+- username: toad, password: password (admin)
+- username: yoshi, password: password
+- username: bowser, password: password

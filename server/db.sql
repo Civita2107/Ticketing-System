@@ -64,5 +64,8 @@ Please try starting the software again.');
 INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (3, 2, '2024-06-30 15:30:10', 'Dark mode has been added to the feature request list.');
 INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (2, 4, '2024-07-01 11:45:30', 'The software should now start without crashing.
 Let me know if you encounter any more issues.');
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (12, 4, '2024-07-02 09:30:15', 'I will look into the issue and get back to you with a solution.');
+INSERT INTO blocks (ticket_id, author, timestamp, content) VALUES (12, 6, '2024-07-03 14:20:45', 'The issue has been resolved.');
+
 
 COMMIT;
