@@ -90,7 +90,7 @@ body {
   padding: 20px; /* Spacing inside the form */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   width: 350px;
-  height: 350px;
+  height: auto;
   max-width: none; /* Maximum width of the form */
   margin: 20px auto; /* Center form on the page */
   position: fixed;
